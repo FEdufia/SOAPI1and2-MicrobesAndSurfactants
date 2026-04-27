@@ -33,14 +33,6 @@ dom_plot_dat <- metdat |>
                                  "Tyrosine-like C4 (R.U/mg C)", "Humic-like C2 (R.U/mg C)",
                                  "Humic-like C3 (R.U/mg C)")))
 
-# Define levels in order
-dom_levels <- c("Surfactant (µM/mg C)", "Tryptophan-like C1 (R.U/mg C)",
-                "Tyrosine-like C4 (R.U/mg C)", "Humic-like C2 (R.U/mg C)",
-                "Humic-like C3 (R.U/mg C)")
-
-
-
-
 # Shared plot function
 make_dom_panel <- function(dom_var, letter, show_x = TRUE, show_legend = TRUE) {
   p <- plot_dat |>
