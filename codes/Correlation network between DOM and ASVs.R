@@ -117,11 +117,13 @@ significant_otus|>
   group_by(DOM_variable, Correlation)|>
   summarise(n = n())
 
-phydat66 =  rel16|>
-  select(otu, genus, phylum)|>
+ASV_DOM_Corr16 =  rel16|>
+  select(ASV = otu, genus, phylum)|>
   distinct()|>
-  inner_join(significant_otus, by = join_by("otu" == "ASV"))
+  inner_join(significant_otus)|>
+  mutate(Correlation = ifelse(CorrelationCoefficient>0, "Positive", "Negative"))
 
+write_xlsx(ASV_DOM_Corr16, "Data/16S_ASVsCorrelatingWithDOM.xlsx")
 
 #16S correlation_network -------------------------------------
 
@@ -339,6 +341,13 @@ significant_otus18|>
   group_by(DOM_variable, Correlation)|>
   summarise(n = n())
 
+ASV_DOM_Corr18 =  rel18|>
+  select(ASV = otu, genus, Division)|>
+  distinct()|>
+  inner_join(significant_otus18)|>
+  mutate(Correlation = ifelse(CorrelationCoefficient>0, "Positive", "Negative"))
+
+write_xlsx(ASV_DOM_Corr18, "Data/18S_ASVsCorrelatingWithDOM.xlsx")
 
 #18S correlation_network -------------------------------------
 
