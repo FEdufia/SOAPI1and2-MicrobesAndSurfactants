@@ -18,7 +18,7 @@ top_phylum16 <- rel16 %>%
   arrange(desc(agg_rel_abund))|>
   group_by( phylum) %>%
   summarise(median=median(agg_rel_abund)) %>%
-  #arrange((desc(median))) %>% # keep this so that the phyla are sorted properly
+  arrange((desc(median))) %>% 
   top_n(11, median) %>%
   pull(phylum)
 
@@ -29,7 +29,7 @@ top_Division18 <- rel18 %>%
   arrange(desc(agg_rel_abund))|>
   group_by( Division) %>%
   summarise(median=mean(agg_rel_abund)) %>%
-  arrange((desc(median))) %>% # keep this so that the phyla are sorted properly
+  arrange((desc(median))) %>% 
   top_n(6, median) %>%
   pull(Division)
 
@@ -37,18 +37,18 @@ top_Division18 <- rel18 %>%
 
 #relative abundance stack bars for 16s--------------
 category_colors <- c(
-  "Pseudomonadota" = "#1f78b4",          # Blue
-  "Cyanobacteriota" = "#33a02c",        # Green
-  "Bacteroidota" = "#ff7f00",           # Red
-  "Actinomycetota" = "#e31a1c",         # Orange
-  "Verrucomicrobiota" = "#6a3d9a",      # Purple
-  "Planctomycetota" = "#b15928",        # Brown
-  "SAR324_clade(Marine_group_B)" = "#a6cee3",  # Light Blue
-  "Marinimicrobia_(SAR406_clade)" = "#b2df8a", # Light Green
-  "Bacillota" = "#fb9a99",              # Light Red
-  "Bdellovibrionota" = "#fdbf6f",       # Light Orange
+  "Pseudomonadota" = "#1f78b4",          
+  "Cyanobacteriota" = "#33a02c",        
+  "Bacteroidota" = "#ff7f00",           
+  "Actinomycetota" = "#e31a1c",         
+  "Verrucomicrobiota" = "#6a3d9a",      
+  "Planctomycetota" = "#b15928",        
+  "SAR324_clade(Marine_group_B)" = "#a6cee3",  
+  "Marinimicrobia_(SAR406_clade)" = "#b2df8a", 
+  "Bacillota" = "#fb9a99",              
+  "Bdellovibrionota" = "#fdbf6f",       
   "Dadabacteria" ="yellow3",
-  "Others" = "#999999"                  # Gray
+  "Others" = "#999999"                  
 )
 
 
