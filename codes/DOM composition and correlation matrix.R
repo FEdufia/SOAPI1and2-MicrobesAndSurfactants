@@ -35,7 +35,7 @@ dom_plot_dat <- metdat |>
 
 # Shared plot function
 make_dom_panel <- function(dom_var, letter, show_x = TRUE, show_legend = TRUE) {
-  p <- plot_dat |>
+  p <- dom_plot_dat |>
     filter(DOM == dom_var) |>
     ggboxplot(x = "station", y = "values", fill = "type") +
     theme_few(base_size = 15) +
@@ -120,3 +120,15 @@ corrplot(cor_matrix,
          p.mat = p_matrix,
          sig.level = c(0.001, 0.01, 0.05),
          insig = "label_sig")
+
+metdat |>
+  mutate(station = case_when(
+    station == "Virginia Coast" ~ "Virginia\nCoast",
+    station == "Delaware Coast" ~ "Delaware\nCoast Summer",
+    station == "Shelf Station" ~ "Continental\nSlope",
+    station == "Fall" ~ "Delaware\nCoast Fall")) |>
+  mutate(station = factor(station, levels = c("Virginia\nCoast","Delaware\nCoast Summer",
+                                              "Continental\nSlope","Delaware\nCoast Fall"))) |>
+  select(station, type, Time, Surfactant = `An_612 nm`,  `DOC ppm`, Comp1, Comp2, Comp3, Comp4,`Chlorophyll-a (ug/L)`) |>
+  mutate(type = ifelse(type == "ML", "SML", "SSW"),
+         type = factor(type, levels = c("SML", "SSW"))) 
