@@ -29,9 +29,9 @@ dom_plot_dat <- metdat |>
   mutate(values = values / `DOC ppm`) |>
   mutate(DOM = factor(DOM,
                       levels = c("Surfactant", "Comp1", "Comp4", "Comp2", "Comp3"),
-                      labels = c("Surfactant (µM/mg C)", "Tryptophan-like C1 (R.U/mg C)",
-                                 "Tyrosine-like C4 (R.U/mg C)", "Humic-like C2 (R.U/mg C)",
-                                 "Humic-like C3 (R.U/mg C)")))
+                      labels = c("Surfactant (µM/mg DOC)", "Tryptophan-like C1 (R.U/mg DOC)",
+                                 "Tyrosine-like C4 (R.U/mg DOC)", "Humic-like C2 (R.U/mg DOC)",
+                                 "Humic-like C3 (R.U/mg DOC)")))
 
 # Shared plot function
 make_dom_panel <- function(dom_var, letter, show_x = TRUE, show_legend = TRUE) {
@@ -52,24 +52,27 @@ make_dom_panel <- function(dom_var, letter, show_x = TRUE, show_legend = TRUE) {
 }
 
 # Build individual panels
-p_a <- make_dom_panel("Surfactant (µM/mg C)",          "a", show_x = TRUE,  show_legend = FALSE)
-p_b <- make_dom_panel("Tryptophan-like C1 (R.U/mg C)", "b", show_x = FALSE, show_legend = FALSE)
-p_c <- make_dom_panel("Tyrosine-like C4 (R.U/mg C)",   "c", show_x = FALSE, show_legend = FALSE)
-p_d <- make_dom_panel("Humic-like C2 (R.U/mg C)",      "d", show_x = TRUE,  show_legend = FALSE)
-p_e <- make_dom_panel("Humic-like C3 (R.U/mg C)",      "e", show_x = TRUE,  show_legend = FALSE)
+p_a <- make_dom_panel("Surfactant (µM/mg DOC)",          "a", show_x = TRUE,  show_legend = FALSE)
+p_b <- make_dom_panel("Tryptophan-like C1 (R.U/mg DOC)", "b", show_x = FALSE, show_legend = FALSE)
+p_c <- make_dom_panel("Tyrosine-like C4 (R.U/mg DOC)",   "c", show_x = FALSE, show_legend = FALSE)
+p_d <- make_dom_panel("Humic-like C2 (R.U/mg DOC)",      "d", show_x = TRUE,  show_legend = FALSE)
+p_e <- make_dom_panel("Humic-like C3 (R.U/mg DOC)",      "e", show_x = TRUE,  show_legend = FALSE)
 
 
 
 legend_plot <- dom_plot_dat |>
-  filter(DOM == "Surfactant (µM/mg C)") |>
+  filter(DOM == "Surfactant (µM/mg DOC)") |>
   ggboxplot(x = "station", y = "values", fill = "type") +
   scale_fill_manual(values = c("skyblue", "grey80"), name = "") +
   theme_few() +
-  theme(legend.position = "right")
+  theme(
+    legend.position = "right",
+    legend.text = element_text(size = 14),
+    legend.key.size = unit(1.5, "cm")
+  )
 
-# Extract legend separately
 legend_grob <- get_legend(legend_plot)
-legend_plot  <- wrap_elements(legend_grob)
+legend_plot <- wrap_elements(legend_grob)
 # Row 1: [a] [b] [c]
 # Row 2: [legend] [d] [e]
 
@@ -86,7 +89,7 @@ p_a  + p_b + p_c + p_d + p_e +legend_plot+
 
 dom_mat<- metdat|>
   select(Surfactant = `An_612 nm`, `DOC ppm`, 
-         `Tryptophan-like C1` = Comp1, `Humic-like C2` = Comp2, `Humic-like C3` = Comp3, `Tyrosine-like C4` = Comp4) |>
+         `Tryptophan-like C1` = Comp1, `Marine\nHumic-like C2` = Comp2, `Terestrial\nHumic-like C3` = Comp3, `Tyrosine-like C4` = Comp4) |>
   na.omit() %>%
   mutate(across(-`DOC ppm`, ~ . / `DOC ppm`)) %>%
   select(-`DOC ppm`)
@@ -121,14 +124,4 @@ corrplot(cor_matrix,
          sig.level = c(0.001, 0.01, 0.05),
          insig = "label_sig")
 
-metdat |>
-  mutate(station = case_when(
-    station == "Virginia Coast" ~ "Virginia\nCoast",
-    station == "Delaware Coast" ~ "Delaware\nCoast Summer",
-    station == "Shelf Station" ~ "Continental\nSlope",
-    station == "Fall" ~ "Delaware\nCoast Fall")) |>
-  mutate(station = factor(station, levels = c("Virginia\nCoast","Delaware\nCoast Summer",
-                                              "Continental\nSlope","Delaware\nCoast Fall"))) |>
-  select(station, type, Time, Surfactant = `An_612 nm`,  `DOC ppm`, Comp1, Comp2, Comp3, Comp4,`Chlorophyll-a (ug/L)`) |>
-  mutate(type = ifelse(type == "ML", "SML", "SSW"),
-         type = factor(type, levels = c("SML", "SSW"))) 
+
