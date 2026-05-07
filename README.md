@@ -1,0 +1,2 @@
+This repository contains code and datasets used to generate figures for the following publication:
+Agblemanyo, F. E., Ammer, D., Birt, A., Bowen, M., Biddle, J., Frossard, A. A., & Wozniak, A. S. (2026). Identifying biological sources and indicators of surfactants in the sea surface microlayer and subsurface waters using fluorescence and microbial community profiling. [To be submitted to EGU Biogeosciences] 
